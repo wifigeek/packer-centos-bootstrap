@@ -1,5 +1,5 @@
 # Install the salt minion
 
 curl -o bootstrap_salt.sh -L https://bootstrap.saltstack.com
-sudo sh bootstrap_salt.sh -G -Z stable
+sudo sh bootstrap_salt.sh -G -Z stable -A 10.102.128.128
 rm -f bootstrap_salt.sh

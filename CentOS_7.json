@@ -1,0 +1,51 @@
+{
+  "variables": {
+    "version": "{{env `VERSION`}}"
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "sudo {{.Vars}} sh {{.Path}}",
+      "scripts": [
+	"scripts/ea.sh",
+        "scripts/vmtools.sh",
+	"scripts/salt-minion.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "build.tgz"
+    }
+  ],
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "iso_url": "http://mirrors.usc.edu/pub/linux/distributions/centos/7.3.1611/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso",
+      "iso_checksum": "f2f7367deb90a25822947660c71638333ca0eceeabecc2d631be6cd508c24494",
+      "iso_checksum_type": "sha256",
+      "ssh_username": "ea",
+      "ssh_password": "ea",
+      "ssh_wait_timeout": "30m",
+      "disk_size": "32000",
+      "disk_additional_size": "32000",
+      "tools_upload_flavor": "linux",
+      "guest_os_type": "centos-64",
+      "headless": "true",
+      "shutdown_command": "sudo /sbin/halt -p",
+      "http_directory": "http",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "vmx_data": {
+        "memsize": "2048",
+        "numvcpus": "2",
+        "vhv.enable": "TRUE",
+	"ethernet0.virtualDev": "vmxnet3"
+      }
+    }
+  ]
+}

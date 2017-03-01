@@ -24,8 +24,8 @@
   "builders": [
     {
       "type": "vmware-iso",
-      "iso_url": "http://mirrors.usc.edu/pub/linux/distributions/centos/6.8/isos/x86_64/CentOS-6.8-x86_64-netinstall.iso",
-      "iso_checksum": "56d9cc5757ed1443af7b321967622a108978328f72e58050d31bcf1998dfd162",
+      "iso_url": "http://mirror.cs.pitt.edu/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso",
+      "iso_checksum": "f2f7367deb90a25822947660c71638333ca0eceeabecc2d631be6cd508c24494",
       "iso_checksum_type": "sha256",
       "ssh_username": "ea",
       "ssh_password": "ea",
@@ -38,18 +38,18 @@
       "shutdown_command": "sudo /sbin/halt -p",
       "http_directory": "http",
       "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks-centos-6.cfg<enter><wait>"
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks-centos-7.cfg<enter><wait>"
       ],
       "vmx_data": {
         "memsize": "2048",
         "numvcpus": "2",
-	"ethernet0.virtualDev": "vmxnet3",
-	"scsi0.virtualdev": "pvscsi",
-	"virtualhw.productcompatibility": "hosted",
-	"virtualhw.version": "11",
-	"vcpu.hotadd": "TRUE",
-	"mem.hotadd": "TRUE",
-	"tools.upgrade.policy": "manual"
+        "ethernet0.virtualDev": "vmxnet3",
+        "scsi0.virtualdev": "pvscsi",
+        "virtualhw.productcompatibility": "hosted",
+        "virtualhw.version": "11",
+        "vcpu.hotadd": "TRUE",
+        "mem.hotadd": "TRUE",
+        "tools.upgrade.policy": "manual"
       }
     }
   ]

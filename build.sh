@@ -1,10 +1,13 @@
 #!/bin/sh
-
-VERSION=v20161017 packer build -only vmware-iso CentOS_6.json
-mkdir build
-cd build
+ovftool="/Applications/vmware_ovf_tool/ovftool"
+VERSION=v20170217
+packer build -only vmware-iso $1.json
+mkdir build-$1-$VERSION
+mkdir -p output
+cd build-$1-$VERSION
 tar -zxvf ../build.tgz
-cd ..
-rm -f build.tgz
-ovftool build/packer-vmware-iso.vmx NCR-Centos-6.8.ova
-rm -rf build
+rm ../build.tgz
+$ovftool --targetType=OVF --compress=9 --shaAlgorithm=sha1 --noImageFiles packer-vmware-iso.vmx ../output/packer-$1-version.ovf
+rm -rf build-$1-$VERISON
+
+#$ovftool --overwrite --datastore="DSCL-DCA-PROD01" --network="Cloud_VM_IP_01 DPortGroup" NCR-$1-$VERSION.ova vi://dcacloudvc.diginsite.net/DCACLOUD/host/DCACLOUDRESCL01

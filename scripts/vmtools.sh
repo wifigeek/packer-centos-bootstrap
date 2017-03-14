@@ -15,26 +15,8 @@ mount -o loop /home/ea/linux.iso /mnt
 tar zxf /mnt/VMwareTools-*.tar.gz -C /tmp
 umount /mnt
 
-cat > /tmp/answer << __ANSWER__
-/usr/bin
-/etc/rc.d
-/etc/rc.d/init.d
-/usr/sbin
-/usr/lib/vmware-tools
-yes
-/usr/lib
-/var/lib
-/usr/share/doc/vmware-tools
-yes
-yes
-no
-no
-yes
-yes
-yes
-__ANSWER__
 
-/tmp/vmware-tools-distrib/vmware-install.pl < /tmp/answer
+/tmp/vmware-tools-distrib/vmware-install.pl -d default
 
 rm -rf /tmp/vmware-tools-distrib
 rm -rf /home/ea/linux.iso

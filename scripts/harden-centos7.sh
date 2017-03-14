@@ -365,6 +365,8 @@ grub2-setpassword
 
 
 sed -ie '/^\/dev\/mapper\/vg_system-tmp/ s/defaults/defaults,nodev,nosuid,noexec/' /etc/fstab
+sed -ie '/^\/dev\/mapper\/vg_home-home/ s/defaults/defaults,nodev,nosuid,noexec/' /etc/fstab
+
 mount -o remount /tmp
 
 setenforce 1

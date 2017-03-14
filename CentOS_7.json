@@ -10,6 +10,7 @@
 	"scripts/ea.sh",
         "scripts/vmtools.sh",
 	"scripts/salt-minion.sh",
+	"scripts/harden-centos7.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
       ]
@@ -32,7 +33,7 @@
       "ssh_wait_timeout": "30m",
       "disk_type_id": "0",
       "disk_size": "48000",
-      "disk_additional_size": "32000",
+      "disk_additional_size": [ "32000", "10240" ],
       "tools_upload_flavor": "linux",
       "guest_os_type": "centos-64",
       "shutdown_command": "sudo /sbin/halt -p",

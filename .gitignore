@@ -1,3 +1,6 @@
 packer_cache
 output
 caches
+output-vmware-iso
+metadata.json
+.DS_Store

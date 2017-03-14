@@ -324,7 +324,7 @@ sed -i 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config
 sed -i 's/#MaxAuthTries 6/MaxAuthTries 4/g' /etc/ssh/sshd_config
 sed -i 's/#IgnoreRhosts yes/IgnoreRhosts yes/g' /etc/ssh/sshd_config
 sed -i 's/#HostbasedAuthentication no/HostbasedAuthentication no/g' /etc/ssh/sshd_config
-sed -i 's/#PermitRootLogin no/PermitRootLogin no/g' /etc/ssh/sshd_config 
+sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config 
 sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/g' /etc/ssh/sshd_config
 sed -i 's/#PermitUserEnvironment no/PermitUserEnvironment no/g' /etc/ssh/sshd_config
 
@@ -354,11 +354,11 @@ chmod -R 0600 /etc/gshadow /etc/passwd- /etc/shadow- /etc/group- /etc/gshadow-
 chown root:root /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d
 chmod og-rwx /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly /etc/cron.d
 
-sed -i 's/# dcredit = -1/dcredit = -1/g' /etc/security/pwquality.conf
-sed -i 's/# lcredit = -1/lcredit = -1/g' /etc/security/pwquality.conf
-sed -i 's/# ocredit = -1/ocredit = -1/g' /etc/security/pwquality.conf
-sed -i 's/# ucredit = -1/ucredit = -1/g' /etc/security/pwquality.conf
-
+sed -i 's/# dcredit = 1/dcredit = -1/g' /etc/security/pwquality.conf
+sed -i 's/# lcredit = 1/lcredit = -1/g' /etc/security/pwquality.conf
+sed -i 's/# ocredit = 1/ocredit = -1/g' /etc/security/pwquality.conf
+sed -i 's/# ucredit = 1/ucredit = -1/g' /etc/security/pwquality.conf
+sed -i 's/# minlen = 9/minlen = 14/g' /etc/security/pwquality.conf
 
 grub2-setpassword
  grub2-mkconfig > /boot/grub2/grub.cfg
@@ -379,15 +379,15 @@ echo "* hard core 0" >> /etc/security/limits.conf
 
 find /var/log -type f -exec chmod g-wx,o-rwx {} +
 
-#sed -i 's/PASS_MIN_DAYS   0/PASS_MIN_DAYS   7/g' /etc/login.defs
-#sed -i 's/PASS_MAX_DAYS   99999/PASS_MAX_DAYS   90/g' /etc/login.defs
-#sed -i '26s/\PASS_MIN_DAYS/PASS_MIN_DAYS 7/g' /etc/login.defs
-
 sed -i '15 s/password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok/password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok remember=5/g' /etc/pam.d/password-auth
 sed -i '15 s/password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok/password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok remember=5/g' /etc/pam.d/system-auth
 
 sed -i '/^PASS_MAX_DAYS/ c\PASS_MAX_DAYS   90' /etc/login.defs
 sed -i '/^PASS_MIN_DAYS/ c\PASS_MIN_DAYS   7' /etc/login.defs
+
+chage -m 7 -M 90 root
+chage -m 7 -M 90 ea
+
 
 find /var/log -type f -exec chmod g-wx,o-rwx {} +
 

@@ -119,8 +119,8 @@ echo $SHMFS >> /etc/fstab
 ##### remember to bindmount /var/tmp to /tmp
 ##### and mount /tmp as noexec,nodev,nosuid
 
-setenforce 1
-sed -i 's/SELINUX=enabled/SELINUX=enforcing/g' /etc/selinux/config
+#setenforce 1
+#sed -i 's/SELINUX=enabled/SELINUX=enforcing/g' /etc/selinux/config
 
 # 2.3.5 Ensure LDAP client is not installed - Level 1 Server (Scored):
 rpm -e openldap-clients
@@ -187,7 +187,7 @@ cp /etc/issue /etc/issue.net
 chown root:root /etc/issue /etc/issue.net
 chmod 644 /etc/issue /etc/issue.net
 
-cat <<- EOF > /etc/ntp/ntp.conf
+cat <<- EOF > /etc/ntp.conf
 # For more information about this file, see the man pages
 # ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).
 
@@ -201,7 +201,7 @@ restrict -6 default kod nomodify notrap nopeer noquery
 # Permit all access over the loopback interface.  This could
 # be tightened as well, but to do so would effect some of
 # the administrative functions.
-restrict 127.0.0.1 
+restrict 127.0.0.1
 restrict ::1
 
 # Hosts on local network are less restricted.
@@ -227,7 +227,7 @@ server 3.pool.ntp.org iburst
 includefile /etc/ntp/crypto/pw
 
 # Key file containing the keys and key identifiers used when operating
-# with symmetric key cryptography. 
+# with symmetric key cryptography.
 keys /etc/ntp/keys
 
 # Specify the key identifiers which are trusted.
@@ -316,8 +316,8 @@ yum --disablerepo="*" --enablerepo="epel" install -y syslog-ng
 yum install audit -y
 # 4.1.1.3 Ensure audit logs are not automatically deleted - Level 2 Server (Scored):
 sed -i 's/max_log_file_action = ROTATE/max_log_file_action = keep_logs/g' /etc/audit/auditd.conf
-sed -i 's/space_left_action = SYSLOG/space_left_action = email/g' /etc/audit/auditd.conf 
-sed -i 's/admin_space_left_action = SUSPEND/admin_space_left_action = halt/g' /etc/audit/auditd.conf 
+sed -i 's/space_left_action = SYSLOG/space_left_action = email/g' /etc/audit/auditd.conf
+sed -i 's/admin_space_left_action = SUSPEND/admin_space_left_action = halt/g' /etc/audit/auditd.conf
 
 # 4.1.3 Ensure auditing for processes that start prior to auditd is enabled - Level 2 Server (Scored):
 sed -i 's/GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=vg_system\/root rhgb quiet"/GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=vg_system\/root rhgb quiet audit=1"/g' /etc/default/grub
@@ -342,32 +342,32 @@ cat <<- EOF > /etc/audit/rules.d/audit.rules
 -w /etc/shadow -p wa -k identity
 -w /etc/security/opasswd -p wa -k identity
 # 4.1.6 Ensure events that modify the system's network environment are collected - Level 2 Server (Scored):
--a always,exit -F arch=b64 -S sethostname -S setdomainname -k system-locale  
--a always,exit -F arch=b32 -S sethostname -S setdomainname -k system-locale  
--w /etc/issue -p wa -k system-locale  
--w /etc/issue.net -p wa -k system-locale  
--w /etc/hosts -p wa -k system-locale  
--w /etc/sysconfig/network -p wa -k system-locale  
+-a always,exit -F arch=b64 -S sethostname -S setdomainname -k system-locale
+-a always,exit -F arch=b32 -S sethostname -S setdomainname -k system-locale
+-w /etc/issue -p wa -k system-locale
+-w /etc/issue.net -p wa -k system-locale
+-w /etc/hosts -p wa -k system-locale
+-w /etc/sysconfig/network -p wa -k system-locale
 # 4.1.7 Ensure events that modify the system's Mandatory Access Controls are collected - Level 2 Server (Scored)
--w /etc/selinux/ -p wa -k MAC-policy  
+-w /etc/selinux/ -p wa -k MAC-policy
 # 4.1.8 Ensure login and logout events are collected - Level 2 Server (Scored)
 -w /var/log/lastlog -p wa -k logins
--w /var/run/faillock/ -p wa -k logins 
+-w /var/run/faillock/ -p wa -k logins
 # 4.1.9 Ensure session initiation information is collected - Level 2 Server (Scored):
--w /var/run/utmp -p wa -k session  
--w /var/log/wtmp -p wa -k session  
--w /var/log/btmp -p wa -k session  
+-w /var/run/utmp -p wa -k session
+-w /var/log/wtmp -p wa -k session
+-w /var/log/btmp -p wa -k session
 # 4.1.10 Ensure discretionary access control permission modification events are collected - Level 2 Server (Scored):
--a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod  
--a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod  
--a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod  
--a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod  
+-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
 # 4.1.11 Ensure unsuccessful unauthorized file access attempts are collected - Level 2 Server (Scored):
--a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access  
--a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access  
--a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access  
+-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
 -a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access
-# 4.1.13 Ensure successful file system mounts are collected - Level 2 Server (Scored)  
+# 4.1.13 Ensure successful file system mounts are collected - Level 2 Server (Scored)
 -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
 -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts
 # 4.1.14 Ensure file deletion events by users are collected - Level 2 Server (Scored)
@@ -416,7 +416,7 @@ sed -i 's/#IgnoreRhosts yes/IgnoreRhosts yes/g' /etc/ssh/sshd_config
 sed -i 's/#HostbasedAuthentication no/HostbasedAuthentication no/g' /etc/ssh/sshd_config
 # 5.2.8 Ensure SSH root login is disabled - Level 1 Server (Scored):
 sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-# 5.2.9 Ensure SSH PermitEmptyPasswords is disabled - Level 1 Server (Scored): 
+# 5.2.9 Ensure SSH PermitEmptyPasswords is disabled - Level 1 Server (Scored):
 sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/g' /etc/ssh/sshd_config
 # 5.2.10 Ensure SSH PermitUserEnvironment is disabled - Level 1 Server (Scored):
 sed -i 's/#PermitUserEnvironment no/PermitUserEnvironment no/g' /etc/ssh/sshd_config

@@ -9,7 +9,8 @@ sed -i "/^UUID/d" /etc/sysconfig/network-scripts/ifcfg-eth0
 
 rm /etc/sysconfig/selinux
 ln -s /etc/selinux/config /etc/sysconfig/selinux
-sed -i "s/^\(SELINUX=\).*/\1enabled/g" /etc/selinux/config
+# 1.6.1.2
+#sed -i "s/^\(SELINUX=\).*/\1enabled/g" /etc/selinux/config
 
 rm -f /etc/ssh/ssh_host_*
 rm -f /etc/udev/rules.d/70-persistent-net.rules

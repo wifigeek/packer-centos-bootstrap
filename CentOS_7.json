@@ -11,6 +11,7 @@
         "scripts/vmtools.sh",
 	"scripts/salt-minion.sh",
 	"scripts/harden-centos7.sh",
+	"scripts/last-mile.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
       ]

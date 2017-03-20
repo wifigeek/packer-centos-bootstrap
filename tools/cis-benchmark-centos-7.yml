@@ -248,9 +248,9 @@ CIS Red Hat Enterprise Linux Benchmark v2.1.1:
       1.6.1.2 Ensure the SELinux state is enforcing - Level 2 Server (Scored):
         audit:
           - "grep SELINUX=enforcing /etc/selinux/config"
-          - "sestatus | grep 'SELinux status:\\s*enabled'"
-          - "sestatus | grep 'Current mode:\\s*enforcing'"
-          - "sestatus | grep 'Mode from config file:\\s*permissive'"
+          - "sestatus | grep 'SELinux status' | grep enabled"
+          - "sestatus | grep 'Current mode:' | grep enforcing"
+          - "sestatus | grep 'Mode from config file' | grep enforcing"
         expected:
           - 0
           - 0
@@ -951,7 +951,7 @@ CIS Red Hat Enterprise Linux Benchmark v2.1.1:
             - 0
         4.2.1.3 Ensure rsyslog default file permissions configured - Level 1 Server (Scored):
           audit:
-            - "grep ^\\$FileCreateMode /etc/rsyslog.conf | grep 0640"
+            - "grep FileCreateMode /etc/rsyslog.conf | grep 0640"
           expected:
             - 0
         4.2.1.4 Ensure rsyslog is configured to send logs to a remote log host - Level 1 Server (Scored):
@@ -961,8 +961,8 @@ CIS Red Hat Enterprise Linux Benchmark v2.1.1:
             - 1
         4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log hosts - Level 1 Server (Not Scored):
           audit:
-            - "grep ^\\$ModLoad imtcp.so /etc/rsyslog.conf"
-            - "grep ^\\$InputTCPServerRun /etc/rsyslog.conf | grep 514"
+            - "grep '^$ModLoad imtcp.so' /etc/rsyslog.conf"
+            - "grep '^$InputTCPServerRun' /etc/rsyslog.conf | grep 514"
           expected:
             - 0
             - 0
@@ -1332,9 +1332,9 @@ CIS Red Hat Enterprise Linux Benchmark v2.1.1:
           - 0
       5.4.4 Ensure default user umask is 027 or more restrictive - Level 1 Server (Scored):
         audit:
-          - "UMASK=$(grep ^umask /etc/bashrc | sed 's/.*umask \\([0-9-]*\\).*/\\1/'); [[ ! -z \"$UMASK\" ]] && [[ $UMASK -ge 027 ]]"
-          - "UMASK=$(grep ^umask /etc/csh.cshrc | sed 's/.*umask \\([0-9-]*\\).*/\\1/'); [[ ! -z \"$UMASK\" ]] && [[ $UMASK -ge 027 ]]"
-          - "UMASK=$(grep ^umask /etc/profile | sed 's/.*umask \\([0-9-]*\\).*/\\1/'); [[ ! -z \"$UMASK\" ]] && [[ $UMASK -ge 027 ]]"
+          - "UMASK=$(awk '/umask/ {a=$0} END{print a}' /etc/bashrc | tr -d '[:alpha:]' |sed 's/ //g'); [[ ! -z \"$UMASK\" ]] && [[ $UMASK -le 027 ]]"
+          - "UMASK=$(awk '/umask/ {a=$0} END{print a}' /etc/csh.cshrc | tr -d '[:alpha:]' |sed 's/ //g'); [[ ! -z \"$UMASK\" ]] && [[ $UMASK -le 027 ]]"
+          - "UMASK=$(awk '/umask/ {a=$0} END{print a}' /etc/profile | tr -d '[:alpha:]' |sed 's/ //g'); [[ ! -z \"$UMASK\" ]] && [[ $UMASK -le 027 ]]"
         expected:
           - 0
           - 0

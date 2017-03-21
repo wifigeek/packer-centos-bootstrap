@@ -8,6 +8,7 @@ if [[ $PACKER_BUILDER_TYPE =~ vmware ]]; then
 
 if [[ $major_version -ge '7' ]]; then
 	yum -y install open-vm-tools
+	rm -rf /home/ea/linux.iso
 else
 
 yum -y install fuse fuse-libs
